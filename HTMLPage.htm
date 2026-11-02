@@ -1,0 +1,1095 @@
+﻿
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Habachi Family Quiz</title>
+
+<style>
+:root {
+    --bg: #080e1d;
+    --panel: #141e34;
+    --gold: #f5c76b;
+    --muted: #aab6ce;
+    --line: #2c3955;
+    --green: #23c78c;
+    --red: #f46c82;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            ellipse at 20% 0%,
+            #24345c 0%,
+            transparent 45%
+        ),
+        var(--bg);
+    color: #f6f7fb;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.wrap {
+    max-width: 950px;
+    margin: auto;
+    padding: 24px;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+}
+
+.brand {
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--gold);
+}
+
+.tag {
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 9px 14px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.hero {
+    text-align: center;
+    padding: 52px 12px 30px;
+}
+
+.eyebrow {
+    color: var(--gold);
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 8vw, 76px);
+    line-height: 1.05;
+    margin: 15px 0;
+    background: linear-gradient(120deg, #fff, #f5c76b);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.panel {
+    background: linear-gradient(
+        145deg,
+        rgba(30,44,72,.97),
+        rgba(15,23,41,.98)
+    );
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 28px;
+    margin: 18px 0;
+    box-shadow: 0 18px 60px #0004;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 14px;
+}
+
+.mode {
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: #17243c;
+}
+
+.mode .emoji {
+    font-size: 32px;
+}
+
+.mode h3 {
+    margin: 12px 0 6px;
+}
+
+.mode p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.btn {
+    cursor: pointer;
+    border: 0;
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-weight: 750;
+    font-size: 15px;
+    color: #0b1222;
+    background: var(--gold);
+    transition: transform .18s, filter .18s;
+    margin: 5px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+}
+
+.btn.secondary {
+    color: #f5f7fc;
+    background: #33425f;
+}
+
+.btn.danger {
+    color: white;
+    background: #b9314a;
+}
+
+.btn:disabled {
+    opacity: .65;
+    cursor: default;
+    transform: none;
+}
+
+.wide {
+    width: 100%;
+    margin: 0;
+}
+
+input {
+    width: 100%;
+    padding: 16px;
+    background: #0e192d;
+    color: white;
+    border: 1px solid #415170;
+    border-radius: 12px;
+    font-size: 16px;
+    outline: none;
+    margin: 10px 0 18px;
+}
+
+input:focus {
+    border-color: var(--gold);
+}
+
+.members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.member {
+    padding: 8px 12px;
+    border-radius: 50px;
+    background: #25334f;
+    border: 1px solid #344564;
+    font-size: 13px;
+}
+
+.small {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    color: var(--gold);
+    font-weight: bold;
+}
+
+.bar {
+    height: 9px;
+    border-radius: 50px;
+    background: #33415b;
+    overflow: hidden;
+    margin: 22px 0;
+}
+
+.fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #c89539, #ffdf91);
+    transition: width .3s;
+}
+
+.question {
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: clamp(24px, 5vw, 34px);
+    text-align: center;
+    direction: rtl;
+    line-height: 1.8;
+    margin: 30px 0;
+}
+
+.choice {
+    padding: 18px 14px;
+    border: 1px solid #415172;
+    border-radius: 14px;
+    background: #22314e;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    transition: .15s;
+    min-height: 65px;
+}
+
+.choice:hover:not(:disabled) {
+    background: #34496e;
+    transform: translateY(-2px);
+}
+
+.choice:disabled {
+    cursor: default;
+}
+
+.choice.correct {
+    background: #15583f;
+    border-color: var(--green);
+}
+
+.choice.wrong {
+    background: #6d2637;
+    border-color: var(--red);
+}
+
+.feedback {
+    text-align: center;
+    font-size: 19px;
+    font-weight: bold;
+    min-height: 32px;
+    margin: 20px 0;
+}
+
+.center {
+    text-align: center;
+}
+
+.score-row {
+    padding: 13px 15px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.final-message {
+    font-family: Tahoma, Arial, sans-serif;
+    direction: rtl;
+    font-size: 25px;
+    line-height: 1.9;
+    color: var(--gold);
+    margin: 30px 0;
+}
+
+footer {
+    text-align: center;
+    color: #7d8ba7;
+    padding: 28px;
+}
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 9px;
+    height: 15px;
+    pointer-events: none;
+    z-index: 20;
+    animation: fall 2.7s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(650deg);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .wrap {
+        padding: 15px;
+    }
+
+    .panel {
+        padding: 19px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 35px 4px 20px;
+    }
+
+    .nav .tag {
+        display: none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+    <nav class="nav">
+        <div class="brand">✦ HABACHI FAMILY QUIZ</div>
+        <span class="tag">ÉDITION FAMILIALE 🇲🇦</span>
+    </nav>
+
+    <!-- ACCUEIL -->
+
+    <section id="home">
+
+        <div class="hero">
+
+            <div class="eyebrow">
+                LE GRAND DÉFI DE LA FAMILLE
+            </div>
+
+            <h1>
+                HABACHI<br>
+                FAMILY QUIZ
+            </h1>
+
+            <p>
+                Des souvenirs, des surnoms, des fous rires.<br>
+                Qui connaît vraiment la famille Habachi ?
+            </p>
+
+        </div>
+
+        <div class="panel">
+
+            <h2>Bienvenue dans le défi ✨</h2>
+
+            <p class="small">
+                Entre ton prénom pour commencer.
+                Les scores sont conservés sur cet appareil.
+            </p>
+
+            <input
+                id="player"
+                placeholder="Ton prénom..."
+                maxlength="35">
+
+            <div class="mode">
+
+                <div class="emoji">🧠</div>
+
+                <h3>Quiz familial</h3>
+
+                <p>
+                    13 questions personnelles,
+                    20 secondes et 10 points
+                    par bonne réponse.
+                </p>
+
+                <button
+                    class="btn wide"
+                    onclick="startQuiz()">
+                    Commencer le quiz →
+                </button>
+
+            </div>
+
+            <p>
+                <button
+                    class="btn secondary"
+                    onclick="showLeaderboard()">
+                    🏆 Voir le classement
+                </button>
+            </p>
+
+            <h3>La famille</h3>
+
+            <div id="members" class="members"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUIZ -->
+
+    <section id="quiz" class="panel hidden">
+
+        <div class="stats">
+            <span id="qnum"></span>
+            <span id="qscore"></span>
+            <span id="timer"></span>
+        </div>
+
+        <div class="bar">
+            <div class="fill" id="progress"></div>
+        </div>
+
+        <div class="question" id="qtext"></div>
+
+        <div class="grid" id="choices"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="center">
+            <button
+                id="next"
+                class="btn hidden"
+                onclick="nextQuestion()">
+                Question suivante →
+            </button>
+        </div>
+
+    </section>
+
+
+    <!-- RESULTAT FINAL -->
+
+    <section id="quizEnd" class="panel hidden center">
+
+        <div style="font-size:55px">🏆</div>
+
+        <h1>Quiz terminé !</h1>
+
+        <h2 id="finalScore"></h2>
+
+        <p id="finalMessage" class="final-message"></p>
+
+        <button
+            class="btn"
+            onclick="showLeaderboard()">
+            Voir le classement
+        </button>
+
+        <button
+            class="btn secondary"
+            onclick="home()">
+            Accueil
+        </button>
+
+    </section>
+
+
+    <!-- CLASSEMENT -->
+
+    <section id="leaderboard" class="panel hidden">
+
+        <h2>🏆 Classement familial</h2>
+
+        <p class="small">
+            Meilleurs scores enregistrés sur cet appareil.
+        </p>
+
+        <div id="scores"></div>
+
+        <p>
+            <button
+                class="btn danger"
+                onclick="clearLeaderboard()">
+                🗑 Supprimer le classement
+            </button>
+        </p>
+
+        <p>
+            <button
+                class="btn secondary"
+                onclick="home()">
+                Retour à l'accueil
+            </button>
+        </p>
+
+    </section>
+
+    <footer>
+        Fait avec ❤️ pour la famille Habachi · 🇲🇦
+    </footer>
+
+</div>
+
+
+<script>
+
+    // =======================================
+    // MEMBRES DE LA FAMILLE
+    // Sahib est le surnom d'Oussama
+    // =======================================
+
+    var family = [
+    "Oussama",
+    "Jawhar",
+    "Zakaria",
+    "Boutaina",
+    "Mehdi",
+    "Malak",
+    "Naima",
+    "Nawal",
+    "Habachi",
+    "Youssra"
+];
+
+
+    // =======================================
+    // QUESTIONS DU QUIZ
+    // =======================================
+
+    var questions = [
+
+    {
+        q: "شكون سميتو الحليب؟ 🥛",
+        a: ["Mehdi", "Jawhar", "Zakaria", "Oussama"],
+        correct: 1
+    },
+
+    {
+        q: "شكون سميتو صاحب؟ 😂",
+        a: ["Jawhar", "Mehdi", "Oussama", "Zakaria"],
+        correct: 2
+    },
+
+    {
+        q: "على شكون ديما كيغوت زكرياء؟ 📢",
+        a: ["Oussama", "Jawhar", "Mehdi", "Malak"],
+        correct: 0
+    },
+
+    {
+        q: "شنو كتقول ملاك لأسامة؟ 😂",
+        a: ["Wagar", "Bata", "Sahib", "Lhalib"],
+        correct: 1
+    },
+
+    {
+        q: "شنو كتقول ملاك لجوهر؟ 😭",
+        a: ["Bata", "Citron", "Lhalib", "Wagar"],
+        correct: 3
+    },
+
+    {
+        q: "شكون اللي دغيا كيتعصب؟ 😡",
+        a: ["Oussama", "Mehdi", "Zakaria", "Jawhar"],
+        correct: 2
+    },
+
+    {
+        q: "شكون اللي كيكون كيتفرج معاك وكتغفل عليه كينعس؟ 😴",
+        a: ["Boutaina", "Naima", "Nawal", "Zakaria"],
+        correct: 0
+    },
+
+    {
+        q: "شكون اللي كينوض يتسحر بالليل واخا ما غاديش يصوم؟ 🌙",
+        a: ["Jawhar", "Zakaria", "Mehdi", "Oussama"],
+        correct: 3
+    },
+
+    {
+        q: "شكون اللي كنقولو ليه سيترون فالدار؟ 🍋",
+        a: ["Zakaria", "Mehdi", "Oussama", "Jawhar"],
+        correct: 1
+    },
+
+    {
+        q: "شكون اللي كيسلت من الخدمة؟ 😂",
+        a: ["Zakaria", "Oussama", "Jawhar", "Mehdi"],
+        correct: 0
+    },
+
+    {
+        q: "من صاحب مقولة نعس أملنعس، نعس أ نعس؟ 😂",
+        a: ["Zakaria", "Jawhar", "Habachi", "Oussama"],
+        correct: 2
+    },
+
+    {
+        q: "شكون أحسن مجودة للقرآن فالدار؟ 📖",
+        a: ["Nawal", "Boutaina", "Malak", "Naima"],
+        correct: 3
+    },
+
+    {
+        q: "شكون اللي كتقوليها سلام كتجفف الدار؟ 😂",
+        a: ["Malak", "Nawal", "Naima", "Boutaina"],
+        correct: 1
+    }
+
+];
+
+
+    // =======================================
+    // VARIABLES
+    // =======================================
+
+    var player = "";
+    var qi = 0;
+    var score = 0;
+    var seconds = 20;
+    var tick = null;
+    var locked = false;
+
+
+    // =======================================
+    // FONCTIONS GENERALES
+    // =======================================
+
+    function el(id) {
+        return document.getElementById(id);
+    }
+
+    function show(id) {
+
+        var ids = [
+        "home",
+        "quiz",
+        "quizEnd",
+        "leaderboard"
+    ];
+
+        for (var i = 0; i < ids.length; i++) {
+            el(ids[i]).classList.add("hidden");
+        }
+
+        el(id).classList.remove("hidden");
+
+        window.scrollTo(0, 0);
+    }
+
+    function home() {
+
+        clearInterval(tick);
+
+        show("home");
+    }
+
+    function getPlayer() {
+
+        var name = el("player").value.replace(/^\s+|\s+$/g, "");
+
+        if (!name) {
+
+            alert("Entre ton prénom pour jouer !");
+
+            el("player").focus();
+
+            return false;
+        }
+
+        player = name;
+
+        return true;
+    }
+
+    function addButton(parent, label, callback) {
+
+        var b = document.createElement("button");
+
+        b.className = "choice";
+
+        b.textContent = label;
+
+        b.onclick = callback;
+
+        parent.appendChild(b);
+
+        return b;
+    }
+
+
+    // =======================================
+    // DEMARRER LE QUIZ
+    // =======================================
+
+    function startQuiz() {
+
+        if (!getPlayer()) {
+            return;
+        }
+
+        qi = 0;
+        score = 0;
+
+        show("quiz");
+
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+
+        clearInterval(tick);
+
+        locked = false;
+        seconds = 20;
+
+        var q = questions[qi];
+
+        el("qnum").textContent =
+        "Question " + (qi + 1) + " / " + questions.length;
+
+        el("qscore").textContent =
+        "⭐ " + score + " points";
+
+        el("timer").textContent =
+        "⏱ " + seconds + "s";
+
+        el("progress").style.width =
+        ((qi + 1) / questions.length * 100) + "%";
+
+        el("qtext").textContent = q.q;
+
+        el("feedback").textContent = "";
+
+        el("next").classList.add("hidden");
+
+        el("choices").innerHTML = "";
+
+        for (var i = 0; i < q.a.length; i++) {
+
+            (function (index) {
+
+                addButton(
+                el("choices"),
+                String.fromCharCode(65 + index) +
+                ".  " + q.a[index],
+                function () {
+                    answer(index);
+                }
+            );
+
+            })(i);
+        }
+
+        tick = setInterval(function () {
+
+            seconds--;
+
+            el("timer").textContent =
+            "⏱ " + seconds + "s";
+
+            if (seconds <= 0) {
+                answer(-1);
+            }
+
+        }, 1000);
+    }
+
+
+    // =======================================
+    // VERIFIER LA REPONSE
+    // =======================================
+
+    function answer(index) {
+
+        if (locked) {
+            return;
+        }
+
+        locked = true;
+
+        clearInterval(tick);
+
+        var q = questions[qi];
+
+        var bs = el("choices").getElementsByTagName("button");
+
+        for (var i = 0; i < bs.length; i++) {
+
+            bs[i].disabled = true;
+
+            if (i === q.correct) {
+                bs[i].classList.add("correct");
+            }
+
+            if (i === index && i !== q.correct) {
+                bs[i].classList.add("wrong");
+            }
+        }
+
+        if (index === q.correct) {
+
+            score += 10;
+
+            el("feedback").style.color = "var(--green)";
+
+            el("feedback").textContent =
+            "🎉 Bravo ! Bonne réponse !";
+
+            confetti();
+
+        } else {
+
+            el("feedback").style.color = "var(--red)";
+
+            el("feedback").textContent =
+            (index === -1
+                ? "⏰ Temps écoulé ! "
+                : "😂 غلطييييي ! ") +
+            "Bonne réponse : " + q.a[q.correct];
+        }
+
+        el("qscore").textContent =
+        "⭐ " + score + " points";
+
+        el("next").textContent =
+        qi === questions.length - 1
+            ? "Voir mon résultat →"
+            : "Question suivante →";
+
+        el("next").classList.remove("hidden");
+    }
+
+
+    // =======================================
+    // QUESTION SUIVANTE
+    // =======================================
+
+    function nextQuestion() {
+
+        qi++;
+
+        if (qi >= questions.length) {
+            finishQuiz();
+        } else {
+            renderQuestion();
+        }
+    }
+
+
+    // =======================================
+    // RESULTAT FINAL
+    // =======================================
+
+    function finishQuiz() {
+
+        clearInterval(tick);
+
+        saveScore();
+
+        show("quizEnd");
+
+        el("finalScore").textContent =
+        score + " / " + (questions.length * 10) + " points";
+
+        el("finalMessage").textContent =
+        "مابغيتش نطلعها على يسرى حيتاش باقي كنحترمها ههههههههه 😂";
+
+        if (score === questions.length * 10) {
+            confetti();
+        }
+    }
+
+
+    // =======================================
+    // SAUVEGARDER LE SCORE
+    // =======================================
+
+    function saveScore() {
+
+        try {
+
+            var data = JSON.parse(
+            localStorage.getItem("habachiFamilyScores") || "[]"
+        );
+
+            if (!Array.isArray(data)) {
+                data = [];
+            }
+
+            data.push({
+                name: player,
+                points: score
+            });
+
+            data.sort(function (a, b) {
+                return b.points - a.points;
+            });
+
+            localStorage.setItem(
+            "habachiFamilyScores",
+            JSON.stringify(data.slice(0, 30))
+        );
+
+        } catch (e) {
+            // Le quiz fonctionne même sans stockage local.
+        }
+    }
+
+
+    // =======================================
+    // CLASSEMENT
+    // =======================================
+
+    function showLeaderboard() {
+
+        show("leaderboard");
+
+        var data = [];
+
+        try {
+
+            data = JSON.parse(
+            localStorage.getItem("habachiFamilyScores") || "[]"
+        );
+
+            if (!Array.isArray(data)) {
+                data = [];
+            }
+
+        } catch (e) {
+            data = [];
+        }
+
+        el("scores").innerHTML = "";
+
+        if (!data.length) {
+
+            el("scores").textContent =
+            "Aucun score pour le moment.";
+
+            return;
+        }
+
+        for (var i = 0; i < data.length; i++) {
+
+            var row = document.createElement("div");
+            var left = document.createElement("span");
+            var right = document.createElement("strong");
+
+            row.className = "score-row";
+
+            left.textContent =
+            (i + 1) + ". " + data[i].name;
+
+            right.textContent =
+            data[i].points + " pts";
+
+            row.appendChild(left);
+            row.appendChild(right);
+
+            el("scores").appendChild(row);
+        }
+    }
+
+
+    // =======================================
+    // SUPPRIMER LE CLASSEMENT
+    // =======================================
+
+    function clearLeaderboard() {
+
+        var confirmed = confirm(
+        "Supprimer définitivement tous les scores " +
+        "enregistrés sur cet appareil ?"
+    );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            localStorage.removeItem("habachiFamilyScores");
+
+            showLeaderboard();
+
+            alert("Le classement a été supprimé !");
+
+        } catch (e) {
+
+            alert(
+            "Impossible de supprimer les scores " +
+            "dans ce navigateur."
+        );
+        }
+    }
+
+
+    // =======================================
+    // ANIMATION CONFETTIS
+    // =======================================
+
+    function confetti() {
+
+        var colors = [
+        "#f5c76b",
+        "#23c78c",
+        "#7d8cff",
+        "#f46c82"
+    ];
+
+        for (var i = 0; i < 35; i++) {
+
+            var d = document.createElement("div");
+
+            d.className = "confetti";
+
+            d.style.left =
+            Math.random() * 100 + "vw";
+
+            d.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+
+            d.style.animationDelay =
+            Math.random() * .4 + "s";
+
+            document.body.appendChild(d);
+
+            (function (node) {
+
+                setTimeout(function () {
+
+                    if (node.parentNode) {
+                        node.parentNode.removeChild(node);
+                    }
+
+                }, 3200);
+
+            })(d);
+        }
+    }
+
+
+    // =======================================
+    // AFFICHER LES MEMBRES
+    // =======================================
+
+    (function () {
+
+        var m = el("members");
+
+        for (var i = 0; i < family.length; i++) {
+
+            var s = document.createElement("span");
+
+            s.className = "member";
+
+            s.textContent = family[i];
+
+            m.appendChild(s);
+        }
+
+    })();
+
+</script>
+
+</body>
+</html>
